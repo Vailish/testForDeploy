@@ -25,12 +25,18 @@ public class TestController {
     }
 
     @GetMapping("/data")
-    public ResponseEntity getData(@RequestParam Long dataId){
+    public ResponseEntity getAllData() {
+        return new ResponseEntity(testService.getAllData(), HttpStatus.OK);
+    }
+
+    @GetMapping("/data/{dataId}")
+    public ResponseEntity getData(@PathVariable Long dataId){
         return new ResponseEntity(testService.getData(dataId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/data")
-    public ResponseEntity deleteData(@RequestParam Long dataId){
+    @DeleteMapping("/data/{dataId}")
+    public ResponseEntity deleteData(@PathVariable Long dataId){
         return new ResponseEntity(testService.deleteData(dataId), HttpStatus.OK);
     }
+
 }

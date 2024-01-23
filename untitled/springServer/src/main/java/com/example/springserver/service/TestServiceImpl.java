@@ -9,6 +9,8 @@ import com.example.springserver.repository.TestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TestServiceImpl implements TestService{
@@ -26,7 +28,7 @@ public class TestServiceImpl implements TestService{
             return null;
         }
         createDataResponseDto.setResult(true);
-        createDataResponseDto.setCnt(createDataResponseDto.getCnt());
+        createDataResponseDto.setCnt(requestDto.getCnt());
         return createDataResponseDto;
     }
 
@@ -40,15 +42,27 @@ public class TestServiceImpl implements TestService{
     }
 
     @Override
-    public DeleteDataResponseDto deleteData(Long id) {
+    public DeleteDataResponseDto deleteData(Long dataId) {
         DeleteDataResponseDto deleteDataResponseDto = new DeleteDataResponseDto();
-        deleteDataResponseDto.setTestId(id);
-        try {
-            testRepository.deleteById(id);
-            deleteDataResponseDto.setResult(true);
-        } catch (Exception e) {
-            deleteDataResponseDto.setResult(false);
-        }
+        deleteDataResponseDto.setTestId(dataId);
+        if (testRepository.existsById(dataId)) {
+            try {
+                testRepository.deleteById(dataId);
+                deleteDataResponseDto.setResult(true);
+            } catch (Exception e) {
+                deleteDataResponseDto.setResult(false);
+            }
+        } else deleteDataResponseDto.setResult(false);
+
         return deleteDataResponseDto;
+    }
+
+    @Override
+    public List<Test> getAllData() {
+        try {
+            return testRepository.findAllBy();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
