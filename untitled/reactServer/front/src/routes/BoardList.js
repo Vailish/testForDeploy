@@ -7,10 +7,7 @@ const BoardList = () => {
     const getBoardList = async () => {
         const resp = (await axios.get('//localhost:8080/api/v1/data')).data
         setBoardList(resp);
-        console.log(BoardList);
 
-        const pngn = resp.pagination;
-        console.log(pngn);
     }
 
     useEffect(() => {
